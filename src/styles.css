@@ -120,10 +120,10 @@
   font-size: 0.72rem;
   color: var(--steel);
 }
-@utility bg-grad-hero { background: var(--grad-hero); }
-@utility bg-grad-dragon { background: var(--grad-dragon); }
-@utility bg-grad-steel { background: var(--grad-steel); }
-@utility bg-grad-gold { background: var(--grad-gold); }
+@utility bg-grad-hero { background-image: var(--grad-hero); }
+@utility bg-grad-dragon { background-image: var(--grad-dragon); }
+@utility bg-grad-steel { background-image: var(--grad-steel); }
+@utility bg-grad-gold { background-image: var(--grad-gold); }
 @utility shadow-elev { box-shadow: var(--shadow-elev); }
 @utility shadow-dragon { box-shadow: var(--shadow-dragon); }
 

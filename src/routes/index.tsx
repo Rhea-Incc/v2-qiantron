@@ -392,7 +392,7 @@ function Fleet() {
                               : "md:col-span-4"
               }
             >
-              <FleetCard {...f} large={i === 0 || i === 3} />
+              <FleetCard name={f.name} spec={f.spec} origin={f.origin} img={f.img} tag={f.tag} large={i === 0 || i === 3} />
             </Reveal>
           ))}
         </div>

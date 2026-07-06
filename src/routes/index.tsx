@@ -1,6 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "motion/react";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { getProducts } from "@/lib/products.functions";
+import type { Product } from "@/lib/products.data";
+
+const productsQueryOptions = queryOptions({
+  queryKey: ["products"],
+  queryFn: () => getProducts(),
+});
 import {
   ArrowRight,
   ArrowUpRight,
@@ -33,6 +41,7 @@ import factoryImg from "@/assets/factory-line.jpg.asset.json";
 import dozerImg from "@/assets/cat-dozer.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions),
   head: () => ({
     meta: [
       { title: "QianTron — Premium Machinery. Seamless Logistics. Delivered." },

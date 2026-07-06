@@ -1,6 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "motion/react";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { getProducts } from "@/lib/products.functions";
+import type { Product } from "@/lib/products.data";
+
+const productsQueryOptions = queryOptions({
+  queryKey: ["products"],
+  queryFn: () => getProducts(),
+});
 import {
   ArrowRight,
   ArrowUpRight,
@@ -23,16 +31,11 @@ import {
 
 import logoAsset from "@/assets/logo.png.asset.json";
 import wordmarkAsset from "@/assets/wordmark.png.asset.json";
-import volvoImg from "@/assets/volvo-excavators.jpg.asset.json";
-import wheelLoaderImg from "@/assets/wheel-loader.jpg.asset.json";
-import trackDrillImg from "@/assets/track-drill.jpg.asset.json";
-import telehandlerImg from "@/assets/telehandler.jpg.asset.json";
-import mobileCraneImg from "@/assets/mobile-crane.jpg.asset.json";
-import craneMobileImg from "@/assets/crane-mobile.jpg.asset.json";
-import factoryImg from "@/assets/factory-line.jpg.asset.json";
 import dozerImg from "@/assets/cat-dozer.jpg.asset.json";
 
+
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions),
   head: () => ({
     meta: [
       { title: "QianTron — Premium Machinery. Seamless Logistics. Delivered." },
@@ -333,18 +336,10 @@ function Difference() {
 
 /* ---------------- Section 03 — Fleet ---------------- */
 
-const fleet = [
-  { name: "Excavators", spec: "20T — 90T", origin: "JP · CN", img: volvoImg.url, tag: "Earthmoving" },
-  { name: "Wheel Loaders", spec: "3m³ — 6m³", origin: "JP", img: wheelLoaderImg.url, tag: "Material handling" },
-  { name: "Bulldozers", spec: "D6 — D11", origin: "USA · CN", img: dozerImg.url, tag: "Grading" },
-  { name: "Mining Equipment", spec: "Drill & haul", origin: "USA · SE", img: trackDrillImg.url, tag: "Extraction" },
-  { name: "Telehandlers & Forklifts", spec: "3T — 20T", origin: "UK · CN", img: telehandlerImg.url, tag: "Sitework" },
-  { name: "Cranes", spec: "25T — 750T", origin: "DE · CN", img: craneMobileImg.url, tag: "Lifting" },
-  { name: "Mobile Cranes", spec: "Rough terrain", origin: "IN · JP", img: mobileCraneImg.url, tag: "Field lift" },
-  { name: "Prime Movers · Tippers · Haulage", spec: "6x4 · 8x4", origin: "CN · DE", img: factoryImg.url, tag: "Fleet" },
-];
-
 function Fleet() {
+  const { data } = useSuspenseQuery(productsQueryOptions);
+  const fleet: Product[] = data.products;
+
   return (
     <section id="fleet" className="relative py-28 md:py-40">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10">
@@ -391,7 +386,7 @@ function Fleet() {
                               : "md:col-span-4"
               }
             >
-              <FleetCard {...f} large={i === 0 || i === 3} />
+              <FleetCard name={f.name} spec={f.spec} origin={f.origin} img={f.img} tag={f.tag} large={i === 0 || i === 3} />
             </Reveal>
           ))}
         </div>

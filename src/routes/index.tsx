@@ -457,7 +457,7 @@ function FleetCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "motion/react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
@@ -386,7 +386,7 @@ function Fleet() {
                               : "md:col-span-4"
               }
             >
-              <FleetCard name={f.name} spec={f.spec} origin={f.origin} img={f.img} tag={f.tag} large={i === 0 || i === 3} />
+              <FleetCard slug={f.slug} name={f.name} spec={f.spec} origin={f.origin} img={f.img} tag={f.tag} large={i === 0 || i === 3} />
             </Reveal>
           ))}
         </div>
@@ -412,11 +412,13 @@ function Fleet() {
 }
 
 function FleetCard({
-  name, spec, origin, img, tag, large,
-}: { name: string; spec: string; origin: string; img: string; tag: string; large?: boolean }) {
+  slug, name, spec, origin, img, tag, large,
+}: { slug: string; name: string; spec: string; origin: string; img: string; tag: string; large?: boolean }) {
   return (
-    <div
-      className={`group relative isolate overflow-hidden rounded-2xl border border-line bg-surface ${
+    <Link
+      to="/products/$slug"
+      params={{ slug }}
+      className={`group relative isolate block overflow-hidden rounded-2xl border border-line bg-surface ${
         large ? "aspect-[16/10]" : "aspect-[4/5]"
       }`}
     >
@@ -455,7 +457,7 @@ function FleetCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
